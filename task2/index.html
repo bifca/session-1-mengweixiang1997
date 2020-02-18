@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name=viewport content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <title>Bootstrap</title>
+    <style type="text/css">
+    .img_holder{width:100%;display:block;}
+    .icon{width:100%;display:block;}
+    .section{margin-bottom:15px;}
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>AP 课程</h2>
+        <div class="row" id="container">
+        </div>
+    </div><!-- content container -->
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script>
+        let videoList = [
+            {title: "计算机科学A", sub: "Computer Science", desc: "AP计算机科学A课程的目标与大部分美国大学计算机系讲授的计算机专业导论课相近", img: "images/course/1.jpeg", video_id: 123456},
+            {title: "计算机原理", sub: "Computer Science Principle", desc: "计算机原理由冯·诺依曼（Von Neumann）与莫尔小组于1943年—1946年提出", img: "images/course/2.jpeg", video_id: 123456},
+            {title: "统计学", sub: "Statistics", desc: "统计学是通过搜索、整理、分析、描述数据等手段，以达到推断所测对象的本质，甚至预测对象未来的一门综合性科学", img: "images/course/3.jpeg", video_id: 123456},
+            {title: "化学", sub: "Chemistry", desc: "化学是自然科学的一种，在分子、原子层次上研究物质的组成、性质、结构与变化规律；创造新物质的科学。", img: "images/course/4.jpeg", video_id: 123456},
+            {title: "物理C：电与磁", sub: "Physics C: Electricit.", desc: "物理学是研究物质运动最一般规律和物质基本结构的学科", img: "images/course/5.jpeg", video_id: 123456},
+            {title: "生物学", sub: "Biology", desc: "生物学是研究生物(包括植物、动物和微生物)的结构、功能、发生和发展规律的科学，是自然科学的一个部分。", img: "images/course/6.jpeg", video_id: 123456},
+        ];
+        for (let i = 0; i < videoList.length; i++) {
+            const el = videoList[i];
+            let tpl = '<section class="col-12 col-lg-2 col-md-4 col-sm-6">' +
+                ' <div class="img_holder">' +
+                ' <img class="icon" src="' + el.img + '" alt="Icon">' +
+                ' </div>' +
+                '<h3>' + el.title + '</h3>' +
+                '<p>' + el.desc + '</p>' +
+                '</section>';
+            $("#container").append(tpl);
+        }
+    </script>
+</body>
+</html>
