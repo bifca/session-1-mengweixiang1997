@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        .table{width:100%;}
+        th[scope="col"]{text-align:left;}
+        .del,.edit{width:30px;height:30px;display:inline-block;position:relative;cursor:pointer;vertical-align:top;}
+        .shadow{width:100%;height:100%;background-color:rgba(0, 0, 0,.8);position:fixed;top:0px;left:0px;}
+    </style>
+</head>
+<body>
+    
+<div class="container" id="root">
+
+
+    <div class="row" v-for="(item, index) in data" :key="index">
+        
+        <div class="table-responsive-sm col-12">
+            <h2 style="display:inline-block;">{{ item.title }}  <span class="badge badge-secondary">{{ item.data.length }}</span></h2>
+            <span style="float:right;vertical-align:top;cursor:pointer;" @click="add(item.title)">
+                <svg t="1582718687884" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2116"
+                width="30" height="30">
+                    <path
+                    d="M512 0a512 512 0 1 0 512 512A512.204984 512.204984 0 0 0 512 0z m271.604444 541.210289a35.872285 35.872285 0 0 1-25.1106 10.249225l-213.491342-0.512462-1.024922 212.46642a34.796117 34.796117 0 0 1-10.249224 24.598138 35.872285 35.872285 0 0 1-25.1106 10.249225 34.949855 34.949855 0 0 1-35.001101-35.616055l1.024922-212.466419-212.978881-0.512462a35.07797 35.07797 0 1 1 0.512462-70.15594l213.491342 0.512461 0.92243-212.261435a35.07797 35.07797 0 1 1 70.15594 0.512461l-0.92243 212.517666 212.978881 0.512461a35.103593 35.103593 0 0 1 24.598139 59.906716z m0 0"
+                    p-id="2117"></path>
+                </svg>
+            </span>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Image address</th>
+                        <th scope="col">Alt</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="vo in item.data" :key="vo.id">
+                        <th scope="row">{{ vo.id }}</th>
+                        <td>{{ vo.img }}</td>
+                        <td>{{ vo.alt }}</td>
+                        <td>
+                            <div class="del" @click="del(item.title, vo.id)">
+                                <svg t="1582701070846" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2101"
+                                width="30" height="30">
+                                    <path d="M512 192c-176.7 0-320 143.3-320 320s143.3 320 320 320 320-143.3 320-320-143.3-320-320-320z m176.8 459.9c9.8 9.8 9.8 25.9 0 35.7l-0.5 0.5c-9.8 9.8-25.9 9.8-35.7 0L516.2 551.6 379.7 688.1c-9.8 9.8-25.9 9.8-35.7 0l-0.5-0.5c-9.8-9.8-9.8-25.9 0-35.7L480 515.4 343.5 379c-9.8-9.8-9.8-25.9 0-35.7l0.5-0.5c9.8-9.8 25.9-9.8 35.7 0l136.4 136.4 136.4-136.4c9.8-9.8 25.9-9.8 35.7 0l0.5 0.5c9.8 9.8 9.8 25.9 0 35.7L552.3 515.4l136.5 136.5z"
+                                    fill="#B4B4B4" p-id="2102">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div class="edit" @click="edit(vo, item.title)">
+                                <svg t="1582707405939" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2096"
+                                    width="20" height="20">
+                                    <path
+                                        d="M850.622159 29.124904c-31.331849-33.126756-82.334296-33.126756-113.660501 0L672.525631 97.602293l151.494653 160.582075 64.441672-68.454812c31.676155-33.143689 31.676155-87.019116 0-120.168449l-37.839797-40.436203z m-208.683321 100.514783l-421.684577 447.919568V587.01356h36.411774v36.417418h36.417418v36.417418h36.417418v36.411774h36.411774V748.318113l427.882085-458.090707-151.855892-160.587719zM183.836843 616.516635l-15.663103 16.379936-57.166089 219.238276 223.21755-69.555462 12.378084-13.484379h-17.102414v-36.411774h-36.417418v-36.417418h-36.417418v-36.411774h-36.411774v-36.417418H183.836843v-6.919987z m-43.704289 338.672958v68.810407h758.528762v-68.810407H140.132554z"
+                                        fill="#B4B4B4" p-id="2097"></path>
+                                </svg>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="shadow" v-if="modal"></div>
+    <div class="modal d-block" tabindex="-1" role="dialog" v-if="modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ editdItem.id }}</h5>
+                    <button type="button" class="close" @click="modal = false">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Image</label>
+                        <input type="file" ref="file" @change="uploadFile">
+                    </div>
+                    <div class="form-group">
+                        <label>Alt</label>
+                        <input type="text" class="form-control" v-model="editdItem.alt">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @click="modal = false">Close</button>
+                    <button type="button" class="btn btn-primary" @click="save">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<script src="//cdn.bootcss.com/vue/2.3.2/vue.min.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.19.2/axios.js"></script>
+<script>
+var vm = new Vue({
+    el: '#root',
+    data(){
+        return{
+            theme: ["exchange_lonless", "regeneration", "petri_dish", "miscellanea", "mould"],
+            modal: false,
+            data: [],
+            isEdit: false,
+            editdItem: {
+                id: 0,
+                alt: '',
+                img: '',
+                theme: '',
+            },
+            defaultItem: {
+                id: 0,
+                alt: '',
+                img: '',
+                theme: '',
+            },            
+        }
+    },
+    mounted() {
+        this.fetchData()
+    },
+    methods: {
+        fetchData(){
+            this.data = []; // empty data                  
+            let _this = this;
+            let items = [];
+            let request = theme => {
+                return new Promise((resolve, reject) => {
+                    axios.post(`http://127.0.0.1:8000/api`, {theme: theme})
+                        .then(res => {                      
+                            resolve(res.data)
+                        })
+                })                
+            }
+            this.theme.map((val,key) => {
+                let item = [];
+                request(val).then(res => {
+                    item["title"] = val;
+                    item["data"] = res;
+                    this.data.push(item);
+                })
+            })
+        },
+        del(theme, id){
+            axios.post(`http://127.0.0.1:8000/del`, {theme: theme, id: id})
+            .then(res => {
+                this.fetchData();
+                let data = res.data;
+                if(data.code === 0)alert("执行失败！");return;
+            })
+        },
+        add(theme){
+            this.editdItem = Object.assign({}, this.defaultItem);
+            this.modal = true;
+            this.isEdit = false;
+            this.editdItem.theme = theme;           
+
+        },
+        edit(item, theme){
+            this.editdItem = Object.assign({}, item);
+            this.modal  = true;
+            this.isEdit = true;
+            this.editdItem.theme = theme;
+
+            
+
+        },
+        save(theme){
+            if (this.isEdit) {
+                axios.post(`http://127.0.0.1:8000/update`, this.editdItem)
+                    .then(res => {
+                        this.fetchData();
+                        let data = res.data;
+                        if (data.code === 0) alert("执行失败！"); return;
+                    })                
+            }else{
+                axios.post(`http://127.0.0.1:8000/add`, this.editdItem)
+                    .then(res => {
+                        this.fetchData();
+                        let data = res.data;
+                        if (data.code === 0) alert("执行失败！"); return;
+                    })                  
+            }
+        },
+        uploadFile(){
+            let file = this.$refs.file.files[0];
+
+            let form = new FormData();
+            form.append("image", file);
+            axios({
+                method: "post",
+                url: "http://127.0.0.1:8000/upload",
+                headers: {
+                    'Content-type': 'multipart/form-data'
+                },
+                data: form,
+            }).then((res) => {
+                let path = res.data.path;
+                console.log(path);
+                this.editdItem.img = path;
+            })           
+        }
+
+
+
+    },
+})
+</script>
+</body>
+</html>
