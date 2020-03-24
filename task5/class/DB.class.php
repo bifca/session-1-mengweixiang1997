@@ -13,8 +13,21 @@ class DB{
         $this->mysqli->query("set names utf8");
     }
 
-
-
+    /**
+     * get tables' datas;
+     * @param string $table [table name]
+     * @return array
+     */
+    public function getList(string $table):array{
+        $arr = [];
+        $result = $this->mysqli->query("select * from " . $table);
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                array_push($arr, $row);
+            }
+        }  
+        return $arr;
+    }
 
 
 

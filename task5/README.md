@@ -22,6 +22,6 @@ Disable access to configuration files
 
 ## Migration
 ~~~
-/migrae/main.sql
+/migrae/search_tool.sql
 ~~~
 

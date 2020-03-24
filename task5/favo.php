@@ -43,6 +43,9 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 
 
 
+
+
+
 }
 ?>
 
@@ -82,15 +85,9 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 
     <div class="row">
         <div class="search col-12 ">
-            <input type="text" v-model="key">
-            <button type="submit" class="btn btn-primary" @click="search">Search</button>
-            
+            <h1>My favorite</h1>
         </div>
-        <div class="row">
-            <p class="result mt-3">Number of results: {{ count }}</p>
-        </div>
-        
-        
+
 
         <table class="table table-borderless">
             <thead>
@@ -110,7 +107,6 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                             <img :src="vo.al.picUrl">
                         </div>
                     </th>
-                    <td>{{ vo.id }}</td>
                     <td>{{ vo.name }}</td>
                     <td>{{ vo.alia[0] }}</td>
                     <td class="author">
@@ -125,20 +121,10 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
             </tbody>
         </table>
     
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item" v-for="index in pages" :key="index">
-                    <a class="page-link" @click="jump(index)">{{ index }}</a>
-                </li>
-            </ul>
-        </nav>
 
 
     </div>
 </div>
-
-
-
 
 
 
@@ -153,12 +139,7 @@ new Vue({
     el: '#app',
     data(){
         return{
-            key: "Avicci",
-            page: 0,     
-            count: 0,
-            data: [], 
-            pages: 0,      
-
+            data: [],
             music_id: 0,
             title: '',
             author: '',
@@ -168,27 +149,11 @@ new Vue({
         }
     },
     mounted() {
-        this.fetchData();
+        // this.fetchData();
         this.newPlayer();
+        this.loadFavrite();
     },
     methods: {
-        fetchData(){
-            if (this.key === "") {
-                return alert("Cannot search empty!");
-            }
-            let data = {
-                key: this.key,
-                page: this.page,
-            };
-            axios.post('api.php', Qs.stringify(data)).then(res => {
-                let data = res.data.data;
-                this.data = data.songs;   
-                this.count = data.songCount;
-                this.pages = Math.ceil(data.songCount / 15) - 1;
-                // console.log(data);
-                                             
-            })
-        },
         jump(id){
             this.page = id; 
             this.data = [];
@@ -198,6 +163,25 @@ new Vue({
             this.data = [];
             this.page = 0; 
             this.fetchData();
+        },
+        loadFavrite(){
+            let data = {get_favo: 1};
+            axios.post('api.php', Qs.stringify(data)).then(res => {
+                let data = res.data;
+                let arr = [];
+                data.map(val => {
+                    arr.push(val.music_id);
+                })
+                let str = arr.join(",");
+                
+                return axios.post('api.php', Qs.stringify({ info_ids: str }));
+            })
+            .then(res => {
+                let data = res.data.data;
+                this.data = data.songs;   
+                console.log(data);
+                                             
+            })
         },
         fetchMusic(id) {
             this.music_id = id;

@@ -1,7 +1,7 @@
 <?php
 declare (strict_types = 1);
-define("DS", DIRECTORY_SEPARATOR);
-require_once __DIR__ .DS."vendor".DS."autoload.php";
+require_once __DIR__ .DIRECTORY_SEPARATOR."vendor".DIRECTORY_SEPARATOR."autoload.php";
+require_once __DIR__ . DIRECTORY_SEPARATOR ."class" . DIRECTORY_SEPARATOR . "DB.class.php";
 
 use GuzzleHttp\Client;
 
@@ -71,5 +71,45 @@ if (isset($_POST["info_id"]) && !empty($_POST["info_id"])) {
     return;
 }
 
+
+/**
+ * Get musics information
+ * @method post
+ * @param play_id {lyrcs id}
+ */
+if (isset($_POST["info_ids"]) && !empty($_POST["info_ids"])) {
+    $ids = (string)$_POST["info_ids"];
+
+    $client = new Client([
+        'base_uri' => 'https://v1.itooi.cn/netease/', // Base URI is used with relative requests
+        'verify'   => false,                          // Skip https
+    ]);
+    $response   = $client->request('GET', 'song?id='.$ids);
+    echo $response->getBody();
+    return;
+}
+
+
+
+
+
+
+
+
+/**
+ * Get my favorite music
+ * @method post
+ * @param get_favo {}
+ */
+if (isset($_POST["get_favo"]) && !empty($_POST["get_favo"])) {
+
+    $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__);
+    $dotenv->load();
+    $db = new DB($_ENV["DB_HOST"], $_ENV["DB_USERNAME"], $_ENV["DB_PASSWORD"], $_ENV["DB_DATABASE"]);
+
+    $arr = $db->getList("favorite");
+    echo json_encode($arr);
+    return;
+}
 
 
