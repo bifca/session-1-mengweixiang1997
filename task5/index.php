@@ -110,7 +110,6 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                             <img :src="vo.al.picUrl">
                         </div>
                     </th>
-                    <td>{{ vo.id }}</td>
                     <td>{{ vo.name }}</td>
                     <td>{{ vo.alia[0] }}</td>
                     <td class="author">
