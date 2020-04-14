@@ -72,11 +72,20 @@ require_once "common.php"
             .skeleton .search{margin-bottom:15px;}
         }
         /* *{border:1px solid #ccc;} */
+        .favorite{width:50px;height:50px;box-shadow:0px 0px 10px 0px #ccc;position:fixed;right:0px;top:100px;border-top-left-radius:10px;border-bottom-left-radius:10px;background-color:#fff;display:flex;justify-content:center;align-items:center;cursor:pointer;}        
     </style>
 </head>
 <body>
     
     <div class="container" id="app">
+
+        <div class="favorite" @click="jump">
+            <svg t="1586507659614" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5713" width="35" height="35">
+                <path
+                    d="M999.68 880.213333l-249.173333-249.173333c41.813333-64 66.133333-140.8 66.133333-222.72C816.64 183.04 634.026667 0 408.32 0 183.04 0 0 183.04 0 408.32c0 225.706667 183.04 408.32 408.32 408.32 82.773333 0 160-24.746667 224.426667-67.413333l248.746666 248.746666c32.426667 32.426667 85.333333 32.426667 117.76 0 32.853333-32.426667 32.853333-85.333333 0.426667-117.76zM137.813333 408.32c0-150.613333 122.026667-272.64 272.64-272.64s272.64 122.026667 272.64 272.64-122.026667 272.64-272.64 272.64S137.813333 558.933333 137.813333 408.32z" p-id="4883" fill="rgb(230,230,230)">
+                </path>
+            </svg>               
+        </div>
 
         <!-- skeleton begin -->
         <div class="skeleton" v-if="isLoading">
@@ -371,7 +380,10 @@ let vm = new Vue({
             this.fetchData();
 
         },
+        jump(){
+            window.location.href = "index.php";
 
+        },
     },
 })
 </script>

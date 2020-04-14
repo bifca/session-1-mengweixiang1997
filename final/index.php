@@ -74,11 +74,21 @@ require_once "common.php"
             .skeleton .search{margin-bottom:15px;}
         }
         /* *{border:1px solid #ccc;} */
+
+        .favorite{width:50px;height:50px;box-shadow:0px 0px 10px 0px #ccc;position:fixed;right:0px;top:100px;border-top-left-radius:10px;border-bottom-left-radius:10px;background-color:#fff;display:flex;justify-content:center;align-items:center;cursor:pointer;}
     </style>
 </head>
 <body>
     
     <div class="container" id="app">
+
+        <div class="favorite" @click="jump">
+            <svg t="1586507659614" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5713" width="35" height="35">
+                <path d="M694 170.8c-71.6 0-138.2 69.6-182 121.8-43.8-52.3-110.3-121.8-182-121.8-129 0-234 101.2-234 225.7 0 74.3 37.6 126.4 67.8 168.2 87.9 121.6 308.8 273 318.1 279.3 9 6.1 19.6 9.2 30.1 9.2s21.1-3.1 30.1-9.2c9.4-6.4 230.3-157.7 318.1-279.3 30.2-41.9 67.9-94 67.9-168.2C928 272 823 170.8 694 170.8z m0 0" p-id="5714" fill="rgb(230,230,230)">
+                </path>
+            </svg>               
+        </div>
+
 
         <!-- skeleton begin -->
         <div class="skeleton" v-if="isLoading">
@@ -193,7 +203,7 @@ let vm = new Vue({
     el: "#app",
     data: {
         // request setting
-        key: "lana del rey",
+        key: "avicii",
         pageSize: 15,     // page items number
         page: 0,          // current page number
         isLoading:false,  // is loading?
@@ -413,6 +423,10 @@ let vm = new Vue({
         // search music
         search(){
             this.fetchData();
+
+        },
+        jump(){
+            window.location.href = "liked.php";
 
         },
         

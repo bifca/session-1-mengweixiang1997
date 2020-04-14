@@ -4,7 +4,7 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . "func". DIRECTORY_SEPARATOR . "main
 
 // initialize DB class;
 $db = new DB("localhost", "root", "123456", "s1624230229");
-
+// $db = new DB("localhost", "root", "123456", "music");
 
 
 $path = explode("/", $_SERVER["PHP_SELF"]);
