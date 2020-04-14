@@ -15,7 +15,7 @@ require_once "common.php"
         :root{
             --color: rgb(31,211,173);
         }
-        body{font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;background-color:rgb(246,246,246);padding-bottom:120px;}
+        body{background-color:rgb(246,246,246);padding-bottom:120px;}
         .table td, .table th{border-top:none;}
         td[scope="col"]{font-size:14px;color:#818181;}
         .page-link{color:var(--color);}
@@ -25,6 +25,7 @@ require_once "common.php"
         .pagination .active{background-color:var(--color);}
         .pagination .active a{color:#fff;}
         
+        .table-hover tbody tr{text-overflow:ellipsis;overflow:hidden;white-space:nowrap;}
         .table-hover tbody tr:hover{background-color:rgb(239,239,239);}
 
         .album{max-width:200px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
@@ -45,7 +46,7 @@ require_once "common.php"
         .skeleton .search .block{height:50px;}
 
         .music_list{overflow:hidden;}
-        .music_list .search{margin-right:0px;margin-left:0px;padding:0px;margin-top:15px;font-size:32px;font-weight:800;}
+        .music_list .search{margin-right:0px;margin-left:0px;padding:0px;margin-top:15px;font-size:32px;text-transform:uppercase;}
         .music_list .search .input{width:100%;height:40px;background-color:rgb(227,227,227);border-radius:30px;display:flex;justify-content:space-between;overflow:hidden;}
         .music_list .search .input input{width:calc(100% - 50px);height:100%;width:100%;background-color:transparent;border:none;outline:none;text-indent:15px;}
         .music_list .search .input .submit{height:40px;width:50px;display:flex;justify-content:center;align-items:center;cursor:pointer;}
@@ -101,35 +102,41 @@ require_once "common.php"
                 My favorite
             </div>
 
-            <table class="table table-hover" v-if="isSearched">
-                <thead>
-                    <tr>
-                        <td scope="col"></td>
-                        <td scope="col">Song</td>
-                        <td scope="col">Singer</td>
-                        <td scope="col">Album</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(item, i) in list" :key="i" :class="music_id === item.songmid ? 'playing' : ''">
-                        <td class="like" @click="liked(item.mid)">
-                            <svg t="1586507659614" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5713" width="25" height="25">
-                                <path d="M694 170.8c-71.6 0-138.2 69.6-182 121.8-43.8-52.3-110.3-121.8-182-121.8-129 0-234 101.2-234 225.7 0 74.3 37.6 126.4 67.8 168.2 87.9 121.6 308.8 273 318.1 279.3 9 6.1 19.6 9.2 30.1 9.2s21.1-3.1 30.1-9.2c9.4-6.4 230.3-157.7 318.1-279.3 30.2-41.9 67.9-94 67.9-168.2C928 272 823 170.8 694 170.8z m0 0" p-id="5714" fill="rgb(255,106,106)">
-                                </path>
-                            </svg>                                                    
-                        </td>
-                        <td v-html="item.title" class="song" @click="playMusic(item.mid)"></td>
-                        <td>{{ displaySingers(item.singer) }}</td>
-                        <td v-html="item.album.title" class="album"></td>
-                    </tr>
-                </tbody>
-            </table>
+            <!-- data table begin -->
+            <div class="table-responsive">
+                <table class="table table-hover" v-if="isSearched">
+                    <thead>
+                        <tr>
+                            <td scope="col"></td>
+                            <td scope="col">Song</td>
+                            <td scope="col">Singer</td>
+                            <td scope="col">Album</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, i) in list" :key="i" :class="music_id === item.mid ? 'playing' : ''">
+                            <td class="like" @click="liked(item.mid)">
+                                <svg t="1586507659614" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5713" width="25" height="25">
+                                    <path d="M694 170.8c-71.6 0-138.2 69.6-182 121.8-43.8-52.3-110.3-121.8-182-121.8-129 0-234 101.2-234 225.7 0 74.3 37.6 126.4 67.8 168.2 87.9 121.6 308.8 273 318.1 279.3 9 6.1 19.6 9.2 30.1 9.2s21.1-3.1 30.1-9.2c9.4-6.4 230.3-157.7 318.1-279.3 30.2-41.9 67.9-94 67.9-168.2C928 272 823 170.8 694 170.8z m0 0" p-id="5714" fill="rgb(255,106,106)">
+                                    </path>
+                                </svg>                                                    
+                            </td>
+                            <td v-html="item.title" class="song" @click="playMusic(item.mid)"></td>
+                            <td>{{ displaySingers(item.singer) }}</td>
+                            <td v-html="item.album.title" class="album"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- data table end -->
 
         </div>
         
         <div :class="[isSearched ? 'd-block' : 'd-none' ,'player']">
             <div ref="player" class="aplayer"></div>
         </div>
+
+        <a id="download_a" class="d-none"></a>
     </div>
 
 <script src="./node_modules/vue/dist/vue.min.js"></script>
@@ -144,20 +151,19 @@ let vm = new Vue({
     el: "#app",
     data: {
         // request setting
-        key: "lana del rey",
-        pageSize: 15,
-        page: 0,
-        isLoading:false,
-        isSearched:true,
+        pageSize: 15,     // page items number
+        page: 0,          // current page number
+        isLoading:false,  // is loading?
+        isSearched:false, // is first searched?
         // reponse data
-        list: [],
+        list: [],         // response result list
 
-        music_id: 0,
-        title: "",
-        author:"",
-        url:"",
-        pic:"",
-        lrc:"",
+        music_id: 0,      // current playing music mid
+        title: "",        // current playing music title
+        author:"",        // current playing music author
+        url:"",           // current playing music url address
+        pic:"",           // current playing music cover
+        lrc:"",           // current playing music lyrics
     },
     mounted() {
         this.fetchData();
@@ -165,6 +171,29 @@ let vm = new Vue({
         // this.initPaginator();
     },
     methods: {
+        download(){
+            let url = "api_tencent.php?song_mid=000I9Epx0vKv7k";
+            let xhr = new XMLHttpRequest();
+            xhr.responseType="blob";
+            xhr.onprogress = progress => {
+                console.log(progress);
+            };
+            xhr.onload = e => {
+                let blob = new Blob([e.target.response]);
+                console.log(blob);
+                
+                $("#download_a").attr("href", URL.createObjectURL(blob)).attr("download", "test.mp3");
+                document.getElementById("download_a").click();
+            }
+            xhr.onloadstart = () => {
+                console.log("Start to download");
+            }
+            xhr.onerror= function(){
+                console.log("Error!");
+            }   
+            xhr.open("get", url, true);
+            xhr.send(null);
+        },
         fetchData() {
             if (this.key === "") {
                 return alert("Cannot search empty!");
@@ -186,24 +215,22 @@ let vm = new Vue({
                 return axios.get("api_tencent.php?" + Qs.stringify(data));
             }).then(res => { //fetch data;
                 let arr = res.data.data;
-
-                console.log(arr);
-
                 this.list = arr;
-
                 this.isLoading = false;
+                this.initPaginator();
             })
         }, 
         initPaginator(){
             let _this = this;
             $(this.$refs.pagination).bootstrapPaginator({
-                currentPage: 1,//当前页。
-                totalPages: 20,//总页数。
-                size: "normal",//应该是页眉的大小。
-                bootstrapMajorVersion: 4,//bootstrap的版本要求。
+                currentPage: this.page === 0 ? 1 : this.page,//curretn page number
+                totalPages: Math.ceil(this.totalnum / this.pageSize),//total page number
+                size: "normal",//font size
+                bootstrapMajorVersion: 4,//bootstrap version required
                 alignment: "right",
-                numberOfPages: 5,//显示的页数
-                itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
+                numberOfPages: 5,// show page foot
+                itemTexts: function (type, page, current) {
+                    // modify the pagination information
                     switch (type) {
                         case "first": return "First";
                         case "prev":  return "Prev";
@@ -212,13 +239,15 @@ let vm = new Vue({
                         case "page":  return page;
                     }
                 },
-                onPageClicked: function (event, originalEvent, type, page) {//给每个页眉绑定一个事件，其实就是ajax请求，其中page变量为当前点击的页上的数字。
+                //Binding an event to each header is actually an ajax request, where the page variable is the number on the currently clicked page.
+                onPageClicked: function (event, originalEvent, type, page) {
                     _this.page = page;
                     _this.fetchData();
                     
                 }
             });
         },
+        // convert singer array to string
         displaySingers(arr){
             let dummy = [];
             if (arr !== undefined) {
@@ -229,16 +258,20 @@ let vm = new Vue({
             }
             return "";
         },
+        // get url qurey parameter
         getQueryVariable(name){
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-            var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
+            // search? The following parameters, and match the regular
+            var r = window.location.search.substr(1).match(reg);
             if (r != null) return unescape(r[2]); return null;
         },
+        // play music
         playMusic(mid){
             let data = {
                 "song_id": mid,
             };
             this.music_id = mid;
+            // serialize the form data and POST request
             axios.get("api_tencent.php?" + Qs.stringify(data)).then(res => {
                 let arr = res.data.data[0];
 
@@ -252,21 +285,25 @@ let vm = new Vue({
             });       
             
         },
+        // get music play address
         getPlayUrl() {
             let url = "api_tencent.php";
             this.url = url + "?song_mid=" + this.music_id;
         },
+        // get lyrics cover address
         getLrc() {
             let url = "api_tencent.php";
             let lrc = url + "?lrc_id=" + this.music_id;
             this.lrc = lrc;
         },   
+        // get music cover address
         getPic() {
             let url = "api_tencent.php";
             let pic = url + "?pic_id=" + this.music_id;
             this.pic = pic;
         },                       
         newPlayer() {
+            // initialize the music player
             let obj = this.$refs.player;
             let ap = new APlayer({
                 container: obj,
@@ -280,9 +317,12 @@ let vm = new Vue({
                 lrcType: 3,
                 audio: [],
             });
+            // add this object to GLOBLE
             this.ap = ap;
         },
+        // fire music player
         firePlayer() {
+            // clear play list
             this.ap.list.clear();
             let data = {
                 title: this.title,
@@ -291,45 +331,46 @@ let vm = new Vue({
                 pic: this.pic,
                 lrc: this.lrc,
             };
-            
+            // add music to music play list
             this.ap.list.add(data);
             // // this.ap.option.music = data;
             // // this.ap.music = data;
+            // after 80ms and play
             this.$nextTick(() => {
                 this.ap.play();
             })
         },
+        // check the music what i liked
         liked(mid){
-            let currentList = []; 
-            this.list.map(val => {
-                if (val.mid !== mid) {
-                    currentList.push(val)
+            let list = this.list.map(val => {
+                // if the liked music mid === fetched data muisc mid;
+                if (val["songmid"] === mid) {
+                    if(val["liked"] === 1){
+                        this.cancelLiked(mid);
+                    }else{
+                        this.addLiked(mid);
+                    }
+                    val["liked"] = val["liked"] === 1 ? 0 : 1;
                 }
+                return val;
             })
-            this.list = currentList;
-            this.cancelLiked(mid);
+            this.list = list;
         },
+        // remove music to favorite list
         cancelLiked(mid){
-            console.log("取消收藏");
-            axios.post("api_liked.php", Qs.stringify({mid: mid, type: 0})).then(res => {
-                let arr = res.data;
-                console.log(arr);
-                
-            })
+            // serialize the form data and POST request
+            axios.post("api_liked.php", Qs.stringify({mid: mid, type: 0}))
         },
+        // add music to favorite list
         addLiked(mid){
-            console.log("添加收藏");
-            axios.post("api_liked.php", Qs.stringify({mid: mid, type: 1})).then(res => {
-                let arr = res.data;
-                console.log(arr);
-                
-            })
+            //serialize the form data and POST request
+            axios.post("api_liked.php", Qs.stringify({mid: mid, type: 1}))
         },
+        // search music
         search(){
             this.fetchData();
 
         },
-        
 
     },
 })

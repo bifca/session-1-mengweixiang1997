@@ -1,0 +1,12 @@
+@font-face{
+  font-family:"FunctionProLight";
+  src:url('../font/functionpro-light-webfont.ttf'),
+  url('../font/functionpro-book-webfont.ttf'),
+  url('../font/functionpro-book-webfont.woff'),
+  url('../font/functionpro-light-webfont.woff'),
+  url('../font/functionpro-light-webfont.svg'),
+  url('../font/functionpro-light-webfont.eot');
+  font-style:normal;
+  font-weight:normal;
+}
+body{font-family:FunctionProLight;}
