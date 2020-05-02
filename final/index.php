@@ -221,13 +221,11 @@ let vm = new Vue({
         lrc:"",           // current playing music lyrics
     },
     mounted() {
-        // let page = this.getQueryVariable("page") !== null ? this.getQueryVariable("page") : 1;
-        // console.log(page);
-
-        this.fetchData();
-        this.newPlayer();
+        this.fetchData(); // fetch data
+        this.newPlayer(); // initialize the player component
     },
     methods: {
+        // load data
         fetchData() {
             // validate search keywords
             if (this.key === "") {

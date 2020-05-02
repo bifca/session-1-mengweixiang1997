@@ -3,7 +3,7 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . "class". DIRECTORY_SEPARATOR . "db.
 require_once __DIR__ . DIRECTORY_SEPARATOR . "func". DIRECTORY_SEPARATOR . "main.func.php";
 
 // initialize DB class;
-$db = new DB("localhost", "root", "123456", "s1624230229");
+$db = new DB("localhost", "root", "", "s1624230229");
 // $db = new DB("localhost", "root", "123456", "music");
 
 
